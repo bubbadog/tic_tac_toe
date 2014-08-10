@@ -10,7 +10,10 @@
 
 require 'pry'
 
+  
+
 loop do
+  
   def initialize_board
     b = {}
     (1..9).each {|position| b[position] = ' '}
@@ -42,6 +45,9 @@ loop do
     begin
       puts "=> Pick a square from (#{empty_positions(b).join(', ')})"
       position = gets.chomp.to_i
+      if b[position] != ' '
+        puts "=> Really?!  You didn't see the list of available squares?"
+      end
       end until empty_positions(b).include?(position)
       b[position] = 'X'
   end
@@ -57,7 +63,7 @@ loop do
       return 'Player' if b.values_at(*line).count('X') == 3
       return 'Computer' if b.values_at(*line).count('O') == 3
     end
-      nil
+    nil
   end
 
   b = initialize_board
@@ -65,13 +71,17 @@ loop do
 
   begin
     player_picks_square(b)
-    draw_board(b)
     comp_picks_square(b)
     draw_board(b)
     winner = check_winner(b)
   end until winner || empty_positions(b).empty?
   if winner
     puts "=> #{winner} won!"
+    if winner == 'Player'
+      puts ["=> You are a Tic Tac Toe god!", "=> You rock!", "=> Braniac!"].sample
+    elsif winner == 'Computer'
+      puts ["=> Doh! Beaten by a toaster!", "=> Beat you with one processor tied behind my back!"].sample
+    end
   else
     puts "=> It's a tie!"
   end
